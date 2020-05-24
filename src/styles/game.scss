@@ -1,32 +1,114 @@
+$tile-boxshadow: inset -1px -1px rgb(117, 117, 117), inset 1px 1px #ebeaea, inset -2px -2px grey, inset 2px 2px #fff;
+$reverse-tile-boxshadow: inset 1px 1px rgb(117, 117, 117), inset -1px -1px #ebeaea, inset 2px 2px grey, inset -2px -2px #fff;
+
+@font-face {
+    font-family: terminalFont;
+    src: url("../assets/DSEG14-Classic/DSEG14Classic-Regular.ttf");
+}
+
 .game-container {
-    margin: 0 auto;
-    width: 60%;
+    width: fit-content;
     height: fit-content;
-    border: 1px solid red;
+    background: silver;
+    box-shadow: $tile-boxshadow;
+    .game-header {
+        height: 55px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .header-container {
+            box-shadow: $reverse-tile-boxshadow;
+            height: 48px;
+            width: calc(100% - 20px);
+            position: relative;
+            top: 5px;
+            display: flex;
+            align-items: center;
+            .number-container {
+                position: relative;
+                font-size: 27px;
+                font-family: terminalFont;
+                color: red;
+                background-color: black;
+                padding: 2px;
+            }
+            .number-value-mirrored {
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                filter: opacity(.35);
+            }
+        }
+    }
+}
+
+.gameboard-container {
+    margin: 0 auto;
+    width: fit-content;
+    height: fit-content;
     display: inline-flex;
+    box-shadow: $reverse-tile-boxshadow;
+    border: 3px solid;
+    border-color: #7d7d7d #fff #fff #7d7d7d;
+    margin: 10px;
+    *{
+        box-sizing: border-box;
+    }
 }
 .loop1 {
-    width: 5%;
-    border: 1px solid blue;
+    width: 25px;
 }
 .loop2 {
     width: 100%;
-    height: 40px;
-    border: 1px solid green;
-
+    height: 25px;
+    position: relative;
     .single-tile {
         height: 100%;
+        box-shadow: $tile-boxshadow;
     }
     .unclicked {
-        background-color: grey;
+        background: silver;
     }
     .clicked {
-        background-color: white;
+        background: silver;
+        box-shadow: none;
+        border-top: .5px solid rgb(100, 100, 100);
+        border-right: .5px solid rgb(100, 100, 100);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
     }
     .flagged {
-        background-color: red;
+        margin: 0px;
+        text-align: center;
+        font-size: 13px;
     }
     .mine {
         background-color: black;
+    }
+    .clicked1 {
+        color: blue;
+    }
+    .clicked2 {
+        color: green;
+    }
+    .clicked3 {
+        color: red;
+    }
+    .clicked4 {
+        color: navy;
+    }
+    .clicked5 {
+        color: maroon;
+    }
+    .clicked6 {
+        color: teal;
+    }
+    .clicked7 {
+        color: black;
+    }
+    .clicked8 {
+        color: gray;
     }
 }

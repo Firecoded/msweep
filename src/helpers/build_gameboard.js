@@ -14,7 +14,7 @@ export const gameRef = {
     expert: {
         h: 16,
         w: 30,
-        mines: 99
+        mines: 99,
     }
 }
 
@@ -43,6 +43,18 @@ export const buildGameBoard = ({h, w, mines}, addMines) => {
         return addMinesToGameBoard(availableSlots, gameBoard, {h, w, mines})
     }
     return gameBoard;
+}
+
+export const countFlags = (gameBoard) => {
+    let count = 0;
+    for (let i=0; i < gameBoard.length; i++){
+        for (let j=0; j < gameBoard[0].length; j++) {
+            if (gameBoard[i][j] === "f") {
+                count++
+            }
+        }
+    }
+    return count;
 }
 
 export const addMinesToGameBoard = (availableSlots, gameBoard, {h, w, mines}) => {

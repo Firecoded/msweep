@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
-import { gameRef, buildGameBoard, directionRef, checkIfOffBoard } from "../helpers/build_gameboard";
+import { gameRef, buildGameBoard, directionRef, checkIfOffBoard, countFlags } from "../helpers/build_gameboard";
 import SingleTile from "./single_tile";
+import { NumberContainer } from "./number-container";
+import { Timer } from "./timer";
 import "../styles/game.scss";
 
 class Game extends Component {
@@ -11,6 +13,9 @@ class Game extends Component {
             difficultyLevel: "expert",
             userViewGameBoard: [],
             gameBoardWithMines: [],
+            minesMinusFlags: gameRef["expert"].mines,
+            timerCount: 0,
+            gameHasStarted: false,
         }
         this.gameParams = gameRef[this.state.difficultyLevel];
     }
@@ -20,14 +25,49 @@ class Game extends Component {
             userViewGameBoard: buildGameBoard(this.gameParams, false),
             gameBoardWithMines: buildGameBoard(this.gameParams, true)
         }
-        this.setState(() => newState)
+        this.setState(() => newState);
+    }
+
+    setGameHasStarted = (gameHasStarted) => {
+        const newState = {gameHasStarted};
+        this.setState((prevState) => newState);
+    }
+
+    startTimer = () => {
+        this.interval = setInterval(() => {
+            this.setState(({ timerCount }) => ({
+                timerCount: timerCount + 1
+            }))
+        }, 1000)
+    }
+
+    stopTimer = () => {
+        clearInterval(this.interval);
+    }
+
+    restartTimer = () => {
+        this.stopTimer()
+        const newState = {timerCount: 0};
+        this.setState(() => newState, this.startTimer());
+    }
+
+    componentWillUnmount() {
+        this.stopTimer();
     }
 
     changeViewState = (y, x, value) => {
+        if (!this.gameHasStarted) {
+            this.setGameHasStarted(true);
+            this.startTimer();
+        }
         this.setState((prevState) => {
             prevState.userViewGameBoard[y][x] = value;
+            if (value === "f" || value === 0) {
+                prevState.minesMinusFlags = this.gameParams.mines - countFlags(prevState.userViewGameBoard);
+            }
             return {
-                userViewGameBoard: prevState.userViewGameBoard
+                userViewGameBoard: prevState.userViewGameBoard,
+                minesMinusFlags: prevState.minesMinusFlags,
             }
         })
     }
@@ -83,28 +123,36 @@ class Game extends Component {
 
     render() {
         console.log("STATE", this.state)
-        const { userViewGameBoard, gameBoardWithMines } = this.state;
+        const { userViewGameBoard, gameBoardWithMines, minesMinusFlags, timerCount } = this.state;
         return (
             <div className="game-container">
-                {userViewGameBoard.map((col, i) => {
-                    return (
-                        <div className="loop1" key={i}>
-                            {col.map((r, j) => {
-                                return (
-                                    <div className="loop2" key={i + " " + j}>
-                                        <SingleTile 
-                                            viewState={userViewGameBoard[i][j]}
-                                            hiddenState={gameBoardWithMines[i][j]}
-                                            boardPosition={[i, j]}
-                                            changeViewState={this.changeViewState}
-                                            checkNearbyTiles={this.checkNearbyTiles}
-                                        />
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    )
-                })}
+                <div className="game-header">
+                    <div className="header-container">
+                        <NumberContainer number={minesMinusFlags}/>
+                        <NumberContainer number={timerCount}/>
+                    </div>
+                </div>
+                <div className="gameboard-container">
+                    {userViewGameBoard.map((col, i) => {
+                        return (
+                            <div className="loop1" key={i}>
+                                {col.map((r, j) => {
+                                    return (
+                                        <div className="loop2" key={"c" + i + "r" + j}>
+                                            <SingleTile 
+                                                viewState={userViewGameBoard[i][j]}
+                                                hiddenState={gameBoardWithMines[i][j]}
+                                                boardPosition={[i, j]}
+                                                changeViewState={this.changeViewState}
+                                                checkNearbyTiles={this.checkNearbyTiles}
+                                            />
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         );
     }

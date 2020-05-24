@@ -1,25 +1,13 @@
 import React from "react";
 
+const viewStateClassMap = new Map(Object.entries({
+    "c": "clicked",
+    "f": "flagged",
+    "m": "mine",
+}))
+viewStateClassMap.set(0, "unclicked");
+
 const SingleTile = ({viewState, hiddenState, boardPosition, changeViewState, checkNearbyTiles}) => {
-    const getViewState = () => {
-        let viewStateClass;
-        switch(viewState) {
-            case 0:
-                viewStateClass = "unclicked";
-                break;
-            case "c": 
-                viewStateClass = "clicked";
-                break;
-            case "f":
-                viewStateClass = "flagged";
-                break;
-            case "m":
-                viewStateClass = "mine";
-                break;
-            default:
-        }
-        return viewStateClass;
-    }
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -51,13 +39,23 @@ const SingleTile = ({viewState, hiddenState, boardPosition, changeViewState, che
         }
     }
 
+    const buildHiddenStateView = (hs) => {
+        if (hiddenState === 0) {
+            return <span className="zero"></span>
+        }
+        return <span className={`clicked${hs}`}>{hs}</span>
+    }
+
+    const viewStateClass = viewStateClassMap.get(viewState) || "unclicked";
+
     return (
         <div 
-            className={`single-tile ${getViewState()}`}
+            className={`single-tile ${viewStateClass}`}
             onClick={handleClick}
             onContextMenu={handleClick}
         >
-            {viewState === "c" ? hiddenState : ""}
+            {viewState === "c" ? buildHiddenStateView(hiddenState) : ""}
+            {viewState === "f" ? <span>&#128681;</span> : ""}
         </div>
     )
 }
