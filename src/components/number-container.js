@@ -2,6 +2,9 @@ import React from "react";
 
 export const NumberContainer = (props) => {
     let currentNumber = props.number;
+    if (currentNumber > 999) {
+        currentNumber = 999;
+    }
     const addZeros = () => {
         const stringNum = currentNumber.toString();
         if (stringNum.length === 1) {
@@ -22,5 +25,4 @@ export const NumberContainer = (props) => {
             </span>
         </div>
     )
-
 }

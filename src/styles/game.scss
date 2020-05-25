@@ -6,6 +6,16 @@ $reverse-tile-boxshadow: inset 1px 1px rgb(117, 117, 117), inset -1px -1px #ebea
     src: url("../assets/DSEG14-Classic/DSEG14Classic-Regular.ttf");
 }
 
+.menu-bar-container {
+    box-shadow: $reverse-tile-boxshadow;
+    height: 48px;
+    width: calc(100% - 20px);
+    position: relative;
+    top: 5px;
+    display: flex;
+    align-items: center;
+}
+
 .game-container {
     width: fit-content;
     height: fit-content;
@@ -24,20 +34,40 @@ $reverse-tile-boxshadow: inset 1px 1px rgb(117, 117, 117), inset -1px -1px #ebea
             top: 5px;
             display: flex;
             align-items: center;
-            .number-container {
-                position: relative;
-                font-size: 27px;
-                font-family: terminalFont;
-                color: red;
-                background-color: black;
-                padding: 2px;
+            .header-elements-flex-container{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-left: 10px;
+                width: calc(100% - 20px);
+                .number-container {
+                    position: relative;
+                    font-size: 27px;
+                    font-family: terminalFont;
+                    color: red;
+                    background-color: black;
+                    padding: 2px;
+                }
+                .number-value-mirrored {
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    filter: opacity(.35);
+                }
             }
-            .number-value-mirrored {
-                position: absolute;
-                top: 2px;
-                left: 2px;
-                filter: opacity(.35);
-            }
+        }
+    }
+    .happy-face-container {
+        box-shadow: $tile-boxshadow;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+        width: 38px;
+        span {
+            padding-top: 2px;
+            font-size: 26px;
+            cursor: pointer;
         }
     }
 }
@@ -65,6 +95,7 @@ $reverse-tile-boxshadow: inset 1px 1px rgb(117, 117, 117), inset -1px -1px #ebea
     .single-tile {
         height: 100%;
         box-shadow: $tile-boxshadow;
+        user-select: none;
     }
     .unclicked {
         background: silver;
@@ -111,4 +142,64 @@ $reverse-tile-boxshadow: inset 1px 1px rgb(117, 117, 117), inset -1px -1px #ebea
     .clicked8 {
         color: gray;
     }
+}
+
+.dropbtn {
+    background-color: silver;
+    color: black;
+    position: relative;
+    top: 5px;
+    margin-left: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: silver;
+    outline: none;
+}
+  
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.game-diff-dropdown {
+    position: relative;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 10px;
+    background-color: silver;
+    padding: 0 7px 0 2px;
+    z-index: 1;
+    box-shadow: $tile-boxshadow;
+    hr {
+        margin-left: 2px;
+    }
+}
+
+// .checkmark {
+
+// }
+
+.non-active-checkmark, 
+.checkmark {
+    display: inline-block;
+    width: 15px;
+    margin-left: 3px;
+}
+
+.dropdown-item {
+    margin: 8px 2px;
+}
+  
+.dropdown-content span:hover {
+    cursor: pointer;
+}
+  
+.show {
+    display:block;
 }

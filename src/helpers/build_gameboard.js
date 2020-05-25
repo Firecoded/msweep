@@ -1,22 +1,20 @@
 import { getRandomNumber } from "./random_number"
 
-export const gameRef = {
-    beginner: {
+export const gameRef = [
+    {
         h: 9,
         w: 9,
         mines: 10,
-    },
-    intermediate: {
+    },{
         h: 16,
         w: 16,
         mines: 40,
-    },
-    expert: {
+    },{
         h: 16,
         w: 30,
         mines: 99,
     }
-}
+]
 
 export const directionRef = {
     upLeft: {y: -1, x: -1},
