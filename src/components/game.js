@@ -32,6 +32,7 @@ class Game extends Component {
             gameHasStarted: false,
             happyFace: true,
             showGameDiffDropdown: false,
+            showMines: false,
         }
         this.gameParams = gameRef[this.state.difficultyLevel];
     }
@@ -49,6 +50,8 @@ class Game extends Component {
             gameHasStarted: false,
             happyFace: true,
             showGameDiffDropdown: false,
+            showMines: false,
+            minesMinusFlags: gameRef[this.state.difficultyLevel].mines,
         }
         this.setState(() => newState);
     }
@@ -60,7 +63,7 @@ class Game extends Component {
 
     setGameHasStarted = (gameHasStarted) => {
         const newState = {gameHasStarted};
-        this.setState((prevState) => newState);
+        this.setState(() => newState);
     }
 
     startTimer = () => {
@@ -185,8 +188,18 @@ class Game extends Component {
         })
     }
 
+    endGame = (y, x) => {
+        console.log("END", y, x)
+        this.stopTimer();
+        const newState = {
+            showMines: true,
+            happyFace: false,
+        };
+        this.setState(() => newState);
+    }
+
     render() {
-        const { userViewGameBoard, gameBoardWithMines, minesMinusFlags, timerCount, showGameDiffDropdown } = this.state;
+        const { userViewGameBoard, gameBoardWithMines, minesMinusFlags, timerCount, showGameDiffDropdown, showMines } = this.state;
         return (
             <div className="game-container">
                 <div className="game-diff-dropdown">
@@ -222,6 +235,8 @@ class Game extends Component {
                                                 boardPosition={[i, j]}
                                                 changeViewState={this.changeViewState}
                                                 checkNearbyTiles={this.checkNearbyTiles}
+                                                endGame={this.endGame}
+                                                showMines={showMines}
                                             />
                                         </div>
                                     )
